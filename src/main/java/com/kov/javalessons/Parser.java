@@ -3,7 +3,6 @@ package com.kov.javalessons;
 import org.jsoup.*; 
 import org.jsoup.nodes.*; 
 import java.io.IOException;
-import java.util.List;
 /**
  *
  * @author olegk
@@ -27,7 +26,8 @@ public class Parser {
 
     public static void main(String[] args) {
         Category c = new Category();
-        List<Category> res = c.index();
-        System.out.println(res);
+        System.out.println(c.index("https://verto-doors.com/ru/product-category/doors/"));
+        Products p = new Products();
+        System.out.println(p.index("https://verto-doors.com/ru/product-category/doors/standart/"));
     }
 }

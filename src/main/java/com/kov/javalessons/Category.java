@@ -59,12 +59,12 @@ public class Category {
         +"\"name\":\""+name+"\" }";
     }
 
-    List<Category> index() {
+    List<Category> index(String url) {
         HashMap<String,String> selector = new HashMap<>();
         selector.put("url", "li.product-category a");
         selector.put("image", "li.product-category a img");
         selector.put("name", "li.product-category a h3");
-        Document doc = JsoupConnect("https://verto-doors.com/ru/product-category/doors/");
+        Document doc = JsoupConnect(url);
         List<Category> res = this.GetListCategories(doc,selector);
         return res;
     }
