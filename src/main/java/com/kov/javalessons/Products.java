@@ -1,7 +1,6 @@
 package com.kov.javalessons;
 
 import static com.kov.javalessons.Parser.JsoupConnect;
-import static com.kov.javalessons.Parser.RegexReplaceAll;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
