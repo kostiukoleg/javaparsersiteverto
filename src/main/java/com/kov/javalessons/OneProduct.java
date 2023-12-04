@@ -13,7 +13,7 @@ public class OneProduct {
     private String image;
     private String name;
     private String description;
-    private boolean INSTANCE = false;
+    private static boolean INSTANCE = false;
     private List<OneProduct> oneProduct;
     
     public OneProduct () {
@@ -49,7 +49,7 @@ public class OneProduct {
         +"\"name\":\""+name+"\","
         +"\"description\":\""+description+"\" }";
     }
-    List<OneProduct> index(String url) {
+    public List<OneProduct> index(String url) {
         HashMap<String,String> selector = new HashMap<>();
         selector.put("main", "div[role='main'] div.product");
         selector.put("url", "meta[itemprop='url']");

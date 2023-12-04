@@ -28,17 +28,7 @@ public class Category {
         }
         this.INSTANCE = true;
     }
-   
-//    public List<Category> GetText(Document doc, String selector){
-//        Elements items = doc.select(selector);
-//        for (Element item : items){
-//            Category category = new Category();
-//            category.setName(item.text());
-//            categories.add(category);
-//        }
-//        return categories;
-//    }
-   
+      
     public List<Category> GetListCategories(Document doc, HashMap<String, String> selector){
         String sel = selector.get("url");
         Elements items = doc.select(sel);
