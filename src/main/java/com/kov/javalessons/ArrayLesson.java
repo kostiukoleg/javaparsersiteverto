@@ -14,6 +14,7 @@ import java.util.List;
  */
 public class ArrayLesson {
     public static void main(String[] args) {
+        System.out.print(Data.data1[1]);
         String[] array1 = {"A", "B", "C"};
         String[] array2 = {"1", "2", "3"};
 

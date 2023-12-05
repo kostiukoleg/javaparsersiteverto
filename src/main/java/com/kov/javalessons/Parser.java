@@ -42,8 +42,8 @@ public class Parser {
 
     public static void main(String[] args) {
         Category c = new Category();
-        System.out.println(c.index("https://verto-doors.com/ru/product-category/doors/"));
+        System.out.println(c.index(AppConfig.CATEGORY_SITE_URL_SELECTOR));
         OneProduct p = new OneProduct();
-        System.out.println(p.index("https://verto-doors.com/ru/product/%d1%81%d1%82%d0%b0%d0%bd%d0%b4%d0%b0%d1%80%d1%82-1a/"));
+        System.out.println(p.index(AppConfig.PRODUCT_SITE_URL_SELECTOR));
     }
 }

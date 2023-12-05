@@ -1,6 +1,7 @@
-com\kov\javalessons\ArrayLesson.class
 com\kov\javalessons\CSV.class
 com\kov\javalessons\OneProduct.class
-com\kov\javalessons\Parser.class
 com\kov\javalessons\Products.class
+com\kov\javalessons\ArrayLesson.class
+com\kov\javalessons\Data.class
+com\kov\javalessons\Parser.class
 com\kov\javalessons\Category.class

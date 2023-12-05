@@ -15,18 +15,19 @@ public class Category {
     private String name;
     private boolean INSTANCE = false;
     private List<Category> categories;
- 
-    public Category (String url, String image, String name) {
-        this.url = url;
-        this.image = image;
-        this.name = name;
-    }
+    
     public Category () {
         if(this.INSTANCE == false){
             this.categories = new ArrayList<>();
             System.out.println("Creating Category");
         }
         this.INSTANCE = true;
+    }
+     
+    public Category (String url, String image, String name) {
+        this.url = url;
+        this.image = image;
+        this.name = name;
     }
       
     public List<Category> GetListCategories(Document doc, HashMap<String, String> selector){
@@ -51,9 +52,9 @@ public class Category {
 
     List<Category> index(String url) {
         HashMap<String,String> selector = new HashMap<>();
-        selector.put("url", "li.product-category a");
-        selector.put("image", "li.product-category a img");
-        selector.put("name", "li.product-category a h3");
+        selector.put("url", AppConfig.CATEGORY_URL_SELECTOR);
+        selector.put("image", AppConfig.CATEGORY_IMAGE_SELECTOR);
+        selector.put("name", AppConfig.CATEGORY_NAME_SELECTOR);
         Document doc = JsoupConnect(url);
         List<Category> res = this.GetListCategories(doc,selector);
         return res;
