@@ -12,6 +12,83 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CSV {
+    
+    private static String csvFilePath;
+    private static String charsetName;
+    private static char customDelimiter;
+    
+    public CSV() {
+        csvFilePath = "example.csv";
+        charsetName = "windows-1251";
+        customDelimiter = ';';
+    }
+    
+    public CSV(String argsCsvFilePath, String argsCharsetName, char argsCustomDelimiter) {
+        csvFilePath = argsCsvFilePath;
+        charsetName = argsCharsetName;
+        customDelimiter = argsCustomDelimiter;
+    }
+    
+    /**
+     *
+     * @param data
+     * @throws java.io.IOException
+     * @throws com.opencsv.exceptions.CsvException
+     * @author olegk
+     */
+    public static void createCsvFile(List<String[]> data) throws IOException, CsvException {
+        Charset encoding = Charset.forName(charsetName);
+        try (CSVWriter writer = new CSVWriter(new FileWriter(csvFilePath, encoding), customDelimiter, 
+                                    CSVWriter.NO_QUOTE_CHARACTER,
+                                    CSVWriter.DEFAULT_ESCAPE_CHARACTER,
+                                    CSVWriter.DEFAULT_LINE_END)) {
+            writer.writeAll(data);
+        }
+    }
+    /**
+     *
+     * @return resultList
+     * @throws java.io.IOException
+     * @throws com.opencsv.exceptions.CsvException
+     * @author olegk
+     */
+    public static List<String[]>readCsvFile() throws IOException, CsvException {
+        List<String[]> resultList = new ArrayList<>();
+        List<String[]> existingData;
+        Charset encoding = Charset.forName(charsetName);
+    
+        try (CSVReader reader = new CSVReader(new FileReader(csvFilePath, encoding))) {
+            existingData = reader.readAll();
+        }
+        for (String[] item : existingData){
+            String joinedString = String.join(",", item);   
+            resultList.add(joinedString.split(";"));    
+        }
+        return resultList;
+    }
+    /**
+     *
+     * @param newData
+     * @throws java.io.IOException
+     * @throws com.opencsv.exceptions.CsvException
+     * @author olegk
+     */
+    public static void updateCsvFile(String[] newData) throws IOException, CsvException {
+        List<String[]> resultList;
+        resultList = readCsvFile();       
+        resultList.add(newData);
+        createCsvFile(resultList);
+    }
+    /**
+    * The main entry point of the Java program.
+    * This method is automatically called when the program is executed.
+    *
+    * @param args Command-line arguments provided to the program.
+    * These can be used to pass inputs to the program from the command line.
+    * @throws java.io.IOException
+    * @throws com.opencsv.exceptions.CsvException
+    * @author olegk
+    */
     public static void main(String[] args) throws IOException, CsvException {
         List<String[]> resultList = new ArrayList<>();
         String[] data1 = {"Название категории", "URL категории", "id родительской категории", "URL родительской категории", "Описание категории", "Изображение", "Заголовок [SEO]", "Ключевые слова [SEO]", "Описание [SEO]", "SEO Описание", "Наценка", "Не выводить в меню", "Активность", "Не выгружать в YML", "Сортировка", "Внешний идентификатор", "id"};
@@ -55,62 +132,7 @@ public class CSV {
         };
         resultList.add(data1);
         resultList.add(data2);
-        char customDelimiter = ';';
-        createCsvFile("example.csv", "windows-1251", customDelimiter, resultList);
+        createCsvFile(resultList);
         updateCsvFile(newData);
-    }
-    /**
-     *
-     * @param csvFilePath
-     * @param charsetName
-     * @param customDelimiter
-     * @param data
-     * @throws java.io.IOException
-     * @throws com.opencsv.exceptions.CsvException
-     */
-    public static void createCsvFile(String csvFilePath, String charsetName, char customDelimiter, List<String[]> data) throws IOException, CsvException {
-        Charset encoding = Charset.forName(charsetName);
-        try (CSVWriter writer = new CSVWriter(new FileWriter(csvFilePath, encoding), customDelimiter, 
-                                    CSVWriter.NO_QUOTE_CHARACTER,
-                                    CSVWriter.DEFAULT_ESCAPE_CHARACTER,
-                                    CSVWriter.DEFAULT_LINE_END)) {
-            writer.writeAll(data);
-        }
-    }
-
-    /**
-     *
-     * @param csvFilePath
-     * @param charsetName
-     * @return
-     * @throws java.io.IOException
-     * @throws com.opencsv.exceptions.CsvException
-     */
-    public static List<String[]>readCsvFile(String csvFilePath, String charsetName) throws IOException, CsvException {
-        List<String[]> resultList = new ArrayList<>();
-        List<String[]> existingData;
-        Charset encoding = Charset.forName(charsetName);
-    
-        try (CSVReader reader = new CSVReader(new FileReader(csvFilePath, encoding))) {
-            existingData = reader.readAll();
-        }
-        for (String[] item : existingData){
-            String joinedString = String.join(",", item);   
-            resultList.add(joinedString.split(";"));    
-        }
-        return resultList;
-    }
-    /**
-     *
-     * @param newData
-     * @throws java.io.IOException
-     * @throws com.opencsv.exceptions.CsvException
-     */
-    public static void updateCsvFile(String[] newData) throws IOException, CsvException {
-        List<String[]> resultList;
-        resultList = readCsvFile("example.csv", "windows-1251");       
-        resultList.add(newData);
-        char customDelimiter = ';';
-        createCsvFile("example.csv", "windows-1251", customDelimiter, resultList);
     }
 }

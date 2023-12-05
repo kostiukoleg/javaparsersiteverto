@@ -4,8 +4,24 @@ import org.jsoup.*;
 import org.jsoup.nodes.*; 
 import java.io.IOException;
 /**
- *
- * @author olegk
+ * The `Parser` class serves as the main entry point for the application,
+ * orchestrating the execution of various auxiliary functions.
+ * 
+ * Responsibilities:
+ * - Acts as the central coordinator for parsing operations.
+ * - Launches and manages auxiliary functions for processing input data.
+ * 
+ * Usage:
+ * - Create an instance of the `Parser` class to initiate parsing tasks.
+ * - Utilize the provided auxiliary functions to perform specific parsing actions.
+ * 
+ * Example:
+ * ```
+ * Parser.main();
+ * ```
+ * 
+ * Note: Additional details about specific auxiliary functions can be found
+ * within their respective method implementations in this class.
  */
 public class Parser {
     
