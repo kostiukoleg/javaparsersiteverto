@@ -13,14 +13,11 @@ import java.util.List;
 
 public class CSV {
     
-    private static String csvFilePath;
-    private static String charsetName;
-    private static char customDelimiter;
+    private static String csvFilePath = "example.csv";
+    private static String charsetName = "windows-1251";
+    private static char customDelimiter = ';';
     
     public CSV() {
-        csvFilePath = "example.csv";
-        charsetName = "windows-1251";
-        customDelimiter = ';';
     }
     
     public CSV(String argsCsvFilePath, String argsCharsetName, char argsCustomDelimiter) {
@@ -37,6 +34,7 @@ public class CSV {
      * @author olegk
      */
     public static void createCsvFile(List<String[]> data) throws IOException, CsvException {
+        System.out.print(charsetName);
         Charset encoding = Charset.forName(charsetName);
         try (CSVWriter writer = new CSVWriter(new FileWriter(csvFilePath, encoding), customDelimiter, 
                                     CSVWriter.NO_QUOTE_CHARACTER,
@@ -47,7 +45,7 @@ public class CSV {
     }
     /**
      *
-     * @return resultList
+     * @return List<String[]> resultList
      * @throws java.io.IOException
      * @throws com.opencsv.exceptions.CsvException
      * @author olegk
