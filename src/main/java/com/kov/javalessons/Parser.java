@@ -3,6 +3,7 @@ package com.kov.javalessons;
 import org.jsoup.*; 
 import org.jsoup.nodes.*; 
 import java.io.IOException;
+import java.util.List;
 /**
  * The `Parser` class serves as the main entry point for the application,
  * orchestrating the execution of various auxiliary functions.
@@ -42,8 +43,14 @@ public class Parser {
 
     public static void main(String[] args) {
         Category c = new Category();
-        System.out.println(c.index(AppConfig.CATEGORY_SITE_URL_SELECTOR));
-        OneProduct p = new OneProduct();
-        System.out.println(p.index(AppConfig.PRODUCT_SITE_URL_SELECTOR));
+        Image image = new Image();
+        String[] folders = {"category"};
+        List<Category> resultList = c.index(AppConfig.CATEGORY_SITE_URL_SELECTOR);
+        for(Category item: resultList){
+           image.download(item.getImage(), folders);
+           //System.out.println(item.getImage()); 
+        }
+        //OneProduct p = new OneProduct();
+        //System.out.println(p.index(AppConfig.PRODUCT_SITE_URL_SELECTOR).get(0));
     }
 }

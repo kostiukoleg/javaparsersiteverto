@@ -15,5 +15,4 @@ public class AppConfig {
     public static final String CATEGORY_URL_SELECTOR = "li.product-category a";
     public static final String CATEGORY_IMAGE_SELECTOR = "li.product-category a img";
     public static final String CATEGORY_NAME_SELECTOR = "li.product-category a h3";
-    
 }

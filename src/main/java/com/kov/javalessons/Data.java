@@ -29,6 +29,10 @@ public class Data {
             "", 
             "1241"
         };
+
+    /**
+     *
+     */
     public static String[] newData = {
         "НСД Двери", 
         "nds-dveri", 

@@ -76,7 +76,7 @@ public class CSV {
      * @throws com.opencsv.exceptions.CsvException
      * @author olegk
      */
-    public static List<String[]>readCsvFile() throws IOException, CsvException {
+    public static List<String[]> readCsvFile() throws IOException, CsvException {
         List<String[]> resultList = new ArrayList<>();
         List<String[]> existingData;
         Charset encoding = Charset.forName(charsetName);
