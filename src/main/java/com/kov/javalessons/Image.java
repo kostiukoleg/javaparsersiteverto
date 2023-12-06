@@ -40,7 +40,7 @@ public class Image {
         }
         return destinationPath;
     }
-    private String getFileNameFromUrl(String url) {
+    public String getFileNameFromUrl(String url) {
         String[] parts = url.split("/");
         return parts[parts.length - 1];
     }

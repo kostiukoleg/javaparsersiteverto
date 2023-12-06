@@ -60,7 +60,6 @@ public class CSV {
      * @author olegk
      */
     public static void createCsvFile(List<String[]> data) throws IOException, CsvException {
-        System.out.print(charsetName);
         Charset encoding = Charset.forName(charsetName);
         try (CSVWriter writer = new CSVWriter(new FileWriter(csvFilePath, encoding), customDelimiter, 
                                     CSVWriter.NO_QUOTE_CHARACTER,
@@ -113,11 +112,11 @@ public class CSV {
     * @throws com.opencsv.exceptions.CsvException
     * @author olegk
     */
-    public static void main(String[] args) throws IOException, CsvException {
-        List<String[]> resultList = new ArrayList<>();      
-        resultList.add(Data.data1);
-        resultList.add(Data.data2);
-        createCsvFile(resultList);
-        updateCsvFile(Data.newData);
-    }
+//    public static void main(String[] args) throws IOException, CsvException {
+//        List<String[]> resultList = new ArrayList<>();      
+//        resultList.add(Data.data1);
+//        resultList.add(Data.data2);
+//        createCsvFile(resultList);
+//        updateCsvFile(Data.newData);
+//    }
 }

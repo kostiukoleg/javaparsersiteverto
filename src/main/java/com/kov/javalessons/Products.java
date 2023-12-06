@@ -27,6 +27,7 @@ public class Products {
         }
         this.INSTANCE = true;
     }
+    
     public List<Products> GetListProducts(Document doc, HashMap<String, String> selector){
         String sel = selector.get("url");
         Elements items = doc.select(sel);
@@ -39,6 +40,19 @@ public class Products {
         }
         return products;
     }
+    
+    public String getUrl() {
+        return url;
+    }
+    
+    public String getImage() {
+        return image;
+    }
+    
+    public String getName() {
+        return name;
+    }  
+    
     @Override
     public String toString(){
         return "{ \"url\":\""+url+"\", "
@@ -46,11 +60,11 @@ public class Products {
         +"\"name\":\""+name+"\" }";
     }
 
-    List<Products> index(String url) {
+    public List<Products> index(String url) {
         HashMap<String,String> selector = new HashMap<>();
-        selector.put("url", "ul.products li.product a.woocommerce-LoopProduct-link");
-        selector.put("image", "ul.products li.product a.woocommerce-LoopProduct-link img");
-        selector.put("name", "ul.products li.product a.woocommerce-LoopProduct-link h3");
+        selector.put("url", AppConfig.PRODUCTS_URL_SELECTOR);
+        selector.put("image", AppConfig.PRODUCTS_IMAGE_SELECTOR);
+        selector.put("name", AppConfig.PRODUCTS_NAME_SELECTOR);
         Document doc = JsoupConnect(url);
         List<Products> res = this.GetListProducts(doc,selector);
         return res;

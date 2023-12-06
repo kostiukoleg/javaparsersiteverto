@@ -15,4 +15,8 @@ public class AppConfig {
     public static final String CATEGORY_URL_SELECTOR = "li.product-category a";
     public static final String CATEGORY_IMAGE_SELECTOR = "li.product-category a img";
     public static final String CATEGORY_NAME_SELECTOR = "li.product-category a h3";
+    
+    public static final String PRODUCTS_URL_SELECTOR = "ul.products li.product a.woocommerce-LoopProduct-link";
+    public static final String PRODUCTS_IMAGE_SELECTOR = "ul.products li.product a.woocommerce-LoopProduct-link img";
+    public static final String PRODUCTS_NAME_SELECTOR = "ul.products li.product a.woocommerce-LoopProduct-link h3";
 }
