@@ -17,11 +17,11 @@ public class OneProduct {
     private List<OneProduct> oneProduct;
     
     public OneProduct () {
-        if(this.INSTANCE == false){
+        if(INSTANCE == false){
             this.oneProduct = new ArrayList<>();
             System.out.println("Creating One Product");
         }
-        this.INSTANCE = true;
+        INSTANCE = true;
     }
     public OneProduct (String url, String image, String name, String description) {
         this.url = url;
