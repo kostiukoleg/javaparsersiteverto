@@ -1,12 +1,9 @@
 package com.kov.javalessons;
 
 import static com.kov.javalessons.Parser.JsoupConnect;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 
 public class OneProduct {
     private String url;
@@ -14,11 +11,9 @@ public class OneProduct {
     private String name;
     private String description;
     private static boolean INSTANCE = false;
-    private List<OneProduct> oneProduct;
     
     public OneProduct () {
         if(INSTANCE == false){
-            this.oneProduct = new ArrayList<>();
             System.out.println("Creating One Product");
         }
         INSTANCE = true;
@@ -29,19 +24,35 @@ public class OneProduct {
         this.name = name;
         this.description = description;
     }
-     public List<OneProduct> GetProduct(Document doc, HashMap<String, String> selector){
+    
+    public OneProduct GetProduct(Document doc, HashMap<String, String> selector){
         String sel = selector.get("main");
-        Elements items = doc.select(sel);
-        for (Element item : items){
+        Element item = doc.selectFirst(sel);
+        OneProduct product = null;
+        if (item instanceof Element){
             String prodURL = item.select(selector.get("url")).attr("content");
             String prodIMG = item.select(selector.get("image")).attr("src");
             String clearName = item.select(selector.get("name")).text(); 
             String prodDescription = item.select(selector.get("description")).outerHtml();
-            OneProduct product = new OneProduct(prodURL, prodIMG, clearName,prodDescription);
-            oneProduct.add(product);
+            product = new OneProduct(prodURL, prodIMG, clearName,prodDescription);
         }
-        return oneProduct;
+        return product;
     }
+    
+     public String getUrl() {
+        return url;
+    }
+    
+    public String getImage() {
+        return image;
+    }
+    
+    public String getName() {
+        return name;
+    }  
+    public String getDescription() {
+        return description;
+    } 
     @Override
     public String toString(){
         return "{ \"url\":\""+url+"\", "
@@ -49,15 +60,15 @@ public class OneProduct {
         +"\"name\":\""+name+"\","
         +"\"description\":\""+description+"\" }";
     }
-    public List<OneProduct> index(String url) {
+    public OneProduct index(String url) {
         HashMap<String,String> selector = new HashMap<>();
-        selector.put("main", "div[role='main'] div.product");
-        selector.put("url", "meta[itemprop='url']");
-        selector.put("image", "div.images a img");
-        selector.put("name", "h1[itemprop='name']");
-        selector.put("description", "div[itemprop='description']");
+        selector.put("main", AppConfig.PRODUCT_MAIN_SELECTOR);
+        selector.put("url", AppConfig.PRODUCT_URL_SELECTOR);
+        selector.put("image", AppConfig.PRODUCT_IMAGE_SELECTOR);
+        selector.put("name", AppConfig.PRODUCT_NAME_SELECTOR);
+        selector.put("description", AppConfig.PRODUCT_DESCRIPTION_SELECTOR);
         Document doc = JsoupConnect(url);
-        List<OneProduct> res = this.GetProduct(doc,selector);
+        OneProduct res = this.GetProduct(doc,selector);
         return res;
     }
 }

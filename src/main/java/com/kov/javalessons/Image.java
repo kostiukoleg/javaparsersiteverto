@@ -1,12 +1,8 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.kov.javalessons;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
@@ -14,66 +10,72 @@ import java.nio.file.StandardCopyOption;
  *
  * @author olegk
  */
-public class Image {
-    private URL imageUrl;
-    private Path destinationPath;
+public class Image implements Runnable {
+    private URI imageUrl;
+    private final Path destinationPath;
     private static final String FOLDER_PATH = "images";
-    
-    private Path imagePath(String imgUrl, String[] folders) {
+
+    Image(String imgUrl) {
+        try {
+            this.imageUrl = new URI(imgUrl);
+        } catch (URISyntaxException e) {
+            throw new IllegalArgumentException("Invalid URL: " + imageUrl, e);
+        }
+        String destinationFolderPath = String.join("\\", System.getProperty("user.dir"), FOLDER_PATH);
+        this.destinationPath = Path.of(destinationFolderPath, getFileNameFromUrl(imgUrl));
+        try {
+            Files.createDirectories(destinationPath.getParent());
+        } catch (IOException e) {
+            System.err.println("Can't create folder: " + e.getMessage());
+        }
+    }
+    Image(String imgUrl, String[] folders) {
+        try {
+            this.imageUrl = new URI(imgUrl);
+        } catch (URISyntaxException e) {
+            throw new IllegalArgumentException("Invalid URL: " + imageUrl, e);
+        }
         String subFolders = String.join("\\", folders);
         String destinationFolderPath = String.join("\\", System.getProperty("user.dir"), FOLDER_PATH, subFolders);
-        destinationPath = Path.of(destinationFolderPath, getFileNameFromUrl(imgUrl));
+        this.destinationPath = Path.of(destinationFolderPath, getFileNameFromUrl(imgUrl));
         try {
             Files.createDirectories(destinationPath.getParent());
         } catch (IOException e) {
             System.err.println("Can't create folder: " + e.getMessage());
         }
-        return destinationPath;
     }
-    private Path imagePath(String imgUrl) {
-        String destinationFolderPath = String.join("\\", System.getProperty("user.dir"), FOLDER_PATH);
-        destinationPath = Path.of(destinationFolderPath, getFileNameFromUrl(imgUrl));
-        try {
-            Files.createDirectories(destinationPath.getParent());
-        } catch (IOException e) {
-            System.err.println("Can't create folder: " + e.getMessage());
-        }
-        return destinationPath;
-    }
-    public String getFileNameFromUrl(String url) {
+    public static String getFileNameFromUrl(String url) {
         String[] parts = url.split("/");
         return parts[parts.length - 1];
     }
-    public void download(String imgUrl, String[] folders) {
-        try {
-            imageUrl = new URL(imgUrl);
-        } catch (MalformedURLException e) {
-            throw new IllegalArgumentException("Invalid URL: " + imageUrl, e);
-        }        
-        try (InputStream in = imageUrl.openStream()) {
-            Files.copy(in, imagePath(imgUrl, folders), StandardCopyOption.REPLACE_EXISTING);
+    public void download(String[] folders) {
+        try (InputStream in = imageUrl.toURL().openStream()) {
+            Files.copy(in, destinationPath, StandardCopyOption.REPLACE_EXISTING);
             System.out.println("Image downloaded successfully to: " + destinationPath);
         } catch (IOException e) {
             System.err.println("Error downloading image: " + e.getMessage());
         }
     }
-    public void download(String imgUrl) {
-        try {
-            imageUrl = new URL(imgUrl);
-        } catch (MalformedURLException e) {
-            throw new IllegalArgumentException("Invalid URL: " + imageUrl, e);
-        }        
-        try (InputStream in = imageUrl.openStream()) {
-            Files.copy(in, imagePath(imgUrl), StandardCopyOption.REPLACE_EXISTING);
+    public void download() {
+        try (InputStream in = imageUrl.toURL().openStream()) {
+            Files.copy(in, destinationPath, StandardCopyOption.REPLACE_EXISTING);
             System.out.println("Image downloaded successfully to: " + destinationPath);
         } catch (IOException e) {
             System.err.println("Error downloading image: " + e.getMessage());
         }
     }
-//    public static void main(String[] args) {
-//        String imageUrl = "https://verto-doors.com/wp-content/uploads/2021/08/стандарт-000-300x300.png";
-//        Image image = new Image();
-//        String[] folders = {"category"};
-//        image.download(imageUrl);
-//    }
+    @Override
+    public void run() {
+        try (InputStream in = imageUrl.toURL().openStream()) {
+            Files.copy(in, destinationPath, StandardCopyOption.REPLACE_EXISTING);
+            System.out.println("Image downloaded successfully to: " + destinationPath);
+        } catch (IOException e) {
+            System.err.println("Error downloading image: " + e.getMessage());
+        }
+    }
+    public static void main(String[] args) {
+        String[] folders = {"category", "new"};
+        Thread thread = new Thread(new Image("https://verto-doors.com/wp-content/uploads/2021/08/стандарт-000-300x300.png", folders));
+        thread.start();
+    }
 }

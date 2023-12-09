@@ -4,7 +4,6 @@ import com.opencsv.exceptions.CsvException;
 import org.jsoup.*; 
 import org.jsoup.nodes.*; 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.PatternSyntaxException;
 /**
@@ -28,22 +27,37 @@ import java.util.regex.PatternSyntaxException;
  * within their respective method implementations in this class.
  */
 public class Parser {
+    public static String[] pushArray(String[] oldArray, String newVal){
+        String[] newArray = new String[oldArray.length + 1];
+        System.arraycopy(oldArray, 0, newArray, 0, oldArray.length);
+        newArray[newArray.length - 1] = newVal;
+        return newArray;
+    }
+    public static int[] pushArray(int[] oldArray, int newVal){
+        int[] newArray = new int[oldArray.length + 1];
+        System.arraycopy(oldArray, 0, newArray, 0, oldArray.length);
+        newArray[newArray.length - 1] = newVal;
+        return newArray;
+    }
     /**
     * Converts a Cyrillic string to its Latin equivalent.
     *
     * @param cyrillic The input string in Cyrillic script to be converted.
     * @return A new string representing the Latin equivalent of the input Cyrillic string.
+    * @throws NullPointerException if the input string is null.
     */
     public static String convertCyrillicToLatin(String cyrillic) {
          
         String[] cyrillicChars = {"а", "б", "в", "г", "д", "е", "ё", "ж", "з", "и", "й", "к", "л", "м", "н", "о", "п", "р", "с", "т", "у", "ф", "х", "ц", "ч", "ш", "щ", "ъ", "ы", "ь", "э", "ю", "я"};
         String[] latinChars = {"a", "b", "v", "g", "d", "e", "yo", "zh", "z", "i", "j", "k", "l", "m", "n", "o", "p", "r", "s", "t", "u", "f", "kh", "ts", "ch", "sh", "shch", "", "y", "", "e", "yu", "ya"};
-
-        for (int i = 0; i < cyrillicChars.length; i++) {
-            cyrillic = cyrillic.replace(cyrillicChars[i], latinChars[i]);
-            cyrillic = cyrillic.replace(cyrillicChars[i].toUpperCase(), latinChars[i].toUpperCase());
+        try {
+            for (int i = 0; i < cyrillicChars.length; i++) {
+                cyrillic = cyrillic.replace(cyrillicChars[i], latinChars[i]);
+                cyrillic = cyrillic.replace(cyrillicChars[i].toUpperCase(), latinChars[i].toUpperCase());
+            } 
+        } catch (NullPointerException e) {  // Catch any NullPointerException that might occur if the input string is null.
+            throw new RuntimeException(e);  // If a NullPointerException occurs, it's wrapped in a RuntimeException and thrown.
         }
-
         return cyrillic;
     }
     /**
@@ -84,35 +98,50 @@ public class Parser {
 
     public static void main(String[] args) throws IOException, CsvException {
         Category c = new Category();
-        Image image = new Image();
-        String[] folders = {"category"};
-        List<Category> resultList = c.index(AppConfig.CATEGORY_SITE_URL_SELECTOR);
-        String[] dataArray = new String[17];
-        int idNumber = Integer.parseInt(Data.newData[14]);
-        for(Category item: resultList){
-           image.download(item.getImage(), folders);
-           dataArray[0] = item.getName();
-           dataArray[1] = convertCyrillicToLatin(item.getName()).toLowerCase();
-           dataArray[2] = Data.newData[2];
-           dataArray[3] = Data.newData[3];
-           dataArray[4] = Data.newData[4];
-           dataArray[5] =  "/uploads/"+image.getFileNameFromUrl(item.getImage());
-           dataArray[6] = Data.newData[6];
-           dataArray[7] = Data.newData[7];
-           dataArray[8] = Data.newData[8];
-           dataArray[9] = Data.newData[9];
-           dataArray[10] = Data.newData[10];
-           dataArray[11] = Data.newData[11];
-           dataArray[12] = Data.newData[12];
-           dataArray[13] = Data.newData[13];
-           idNumber = ++idNumber;
-           dataArray[14] = String.valueOf(idNumber);
-           dataArray[15] = Data.newData[15];
-           dataArray[16] = dataArray[14];
-           CSV.updateCsvFile(dataArray);
-        }
-        
-        Products p = new Products();
-        System.out.println(p.index("https://verto-doors.com/ru/product-category/doors/%d0%ba%d0%bb%d0%b0%d1%81%d1%81%d0%b8%d0%ba/").get(0));
+        List<Category> categories = c.index(AppConfig.CATEGORY_SITE_URL);
+        String[] data_c_Array = new String[17];
+        String[] data_p_Array = new String[25];
+        int catIdNumber = Integer.parseInt(Data.categoryData1[14]);
+        int prodIdNumber = Integer.parseInt(Data.productsData1[17]);
+        List<Products> products;
+        Products ps = new Products();
+        OneProduct p = new OneProduct();
+        //Image image = new Image();
+//        String[] folders = {"category"};
+        String[] folders = {"products"};
+        for(Category item_c: categories){
+//           image.download(item.getImage(), folders);
+            data_c_Array[0] = item_c.getName();
+            data_c_Array[1] = convertCyrillicToLatin(item_c.getName()).toLowerCase();
+            data_c_Array[2] = Data.newCategoryData[2];
+            data_c_Array[3] = Data.newCategoryData[3];
+            data_c_Array[4] = Data.newCategoryData[4];
+            data_c_Array[5] =  "/uploads/"+Image.getFileNameFromUrl(item_c.getImage());
+            data_c_Array[6] = Data.newCategoryData[6];
+            data_c_Array[7] = Data.newCategoryData[7];
+            data_c_Array[8] = Data.newCategoryData[8];
+            data_c_Array[9] = Data.newCategoryData[9];
+            data_c_Array[10] = Data.newCategoryData[10];
+            data_c_Array[11] = Data.newCategoryData[11];
+            data_c_Array[12] = Data.newCategoryData[12];
+            data_c_Array[13] = Data.newCategoryData[13];
+            data_c_Array[14] = String.valueOf(++catIdNumber);
+            data_c_Array[15] = Data.newCategoryData[15];
+            data_c_Array[16] = data_c_Array[14];
+//           CSV.updateCsvFile(dataArray);
+            products = ps.index(item_c.getUrl());
+            for(Products item_p: products){
+                OneProduct data_p = p.index(item_p.getUrl());
+                //image.download(data_p.getImage(), folders);
+                data_p_Array[0] = "Межкомнатные двери/Verto/"+item_c.getName();
+                data_p_Array[1] = "mezhkomnatnye-dveri-vinnica/verto/"+convertCyrillicToLatin(item_c.getName()).toLowerCase();
+                data_p_Array[2] = "Дверне полотно "+data_p.getName();
+                data_p_Array[3] = Data.productsData1[3];
+                data_p_Array[4] = data_p.getDescription();
+                data_p_Array[5] = Data.productsData1[5];
+                data_p_Array[6] = convertCyrillicToLatin(data_p_Array[2]).toLowerCase();
+                data_p_Array[7] = "1.0-2-306x350.jpg[:param:][alt=Дверне полотно 1.0][title=Дверне полотно 1.0]";
+            }
+        }       
     }
 }
