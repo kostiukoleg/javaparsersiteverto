@@ -6,6 +6,7 @@ import org.jsoup.nodes.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.PatternSyntaxException;
 /**
  * The `Parser` class serves as the main entry point for the application,
  * orchestrating the execution of various auxiliary functions.
@@ -27,7 +28,13 @@ import java.util.List;
  * within their respective method implementations in this class.
  */
 public class Parser {
-     public static String convertCyrillicToLatin(String cyrillic) {
+    /**
+    * Converts a Cyrillic string to its Latin equivalent.
+    *
+    * @param cyrillic The input string in Cyrillic script to be converted.
+    * @return A new string representing the Latin equivalent of the input Cyrillic string.
+    */
+    public static String convertCyrillicToLatin(String cyrillic) {
          
         String[] cyrillicChars = {"а", "б", "в", "г", "д", "е", "ё", "ж", "з", "и", "й", "к", "л", "м", "н", "о", "п", "р", "с", "т", "у", "ф", "х", "ц", "ч", "ш", "щ", "ъ", "ы", "ь", "э", "ю", "я"};
         String[] latinChars = {"a", "b", "v", "g", "d", "e", "yo", "zh", "z", "i", "j", "k", "l", "m", "n", "o", "p", "r", "s", "t", "u", "f", "kh", "ts", "ch", "sh", "shch", "", "y", "", "e", "yu", "ya"};
@@ -39,7 +46,14 @@ public class Parser {
 
         return cyrillic;
     }
-     
+    /**
+    * This function is named 'JsoupConnect' and it's a public and static method. 
+    * It takes a String 'url' as an argument and returns a Document object.
+    *
+    * @param url The URL to connect to.
+    * @return Document object after successfully connecting to the URL.
+    * @throws RuntimeException if an IOException occurs during the connection process.
+    */ 
     public static Document JsoupConnect(String url) {
         Document doc; 
         try {    
@@ -49,9 +63,22 @@ public class Parser {
         }
         return doc;
     }
-
+    /**
+     * Replaces all occurrences of a specified regex pattern in a given string with a replacement string.
+     *
+     * @param data    The input string where replacements will be made.
+     * @param regex   The regular expression pattern to find in the input string.
+     * @param replace The string to replace each match of the regex pattern.
+     * @return A new string resulting from replacing all occurrences of the regex pattern with the replacement string.
+     * @throws PatternSyntaxException if the regular expression's syntax is invalid.
+    */
     public static String RegexReplaceAll(String data, String regex, String replace){
-        String res = data.replaceAll(regex,replace);
+        String res;
+        try {
+            res = data.replaceAll(regex,replace);
+        } catch (PatternSyntaxException e) {
+            throw new RuntimeException(e);
+        }
         return res;
     }
 
