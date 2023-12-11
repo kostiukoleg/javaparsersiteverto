@@ -36,6 +36,10 @@ public class ArrayLesson {
 //        //Arrays.asList(result)
 //        System.out.println(Arrays.toString(result));//Arrays.toString(resultList2.get(0))
 //        System.out.println(Arrays.asList(resultList2.get(1)));
-        System.out.println(myPrint(null));
+        String[] res = CSV.checkForSymbol(new String[]{"Oleg", "Victor", "Igor;'sfsdf", "Marina;'"});
+        for(String item: res){
+            System.out.println(item);
+        }
+
     }
 }

@@ -9,6 +9,7 @@ package com.kov.javalessons;
  * @author olegk
  */
 public class AppConfig {
+    public static final String FOLDER_DELIMITER = "\\";
     public static final String PRODUCTS_SITE_URL = "https://verto-doors.com/ru/product-category/doors/%d0%ba%d0%bb%d0%b0%d1%81%d1%81%d0%b8%d0%ba/"; 
     public static final String PRODUCT_SITE_URL = "https://verto-doors.com/ru/product/%d1%81%d1%82%d0%b0%d0%bd%d0%b4%d0%b0%d1%80%d1%82-1a/";
     public static final String CATEGORY_SITE_URL = "https://verto-doors.com/ru/product-category/doors/";

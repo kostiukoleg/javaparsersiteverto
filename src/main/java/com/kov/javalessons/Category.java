@@ -14,21 +14,25 @@ public class Category {
     private String url;
     private String image;
     private String name;
-    private boolean INSTANCE = false;
-    private List<Category> categories;
+    private static Category singleInstance;
+    private static List<Category> categories;
 
-    public Category() {
-        if (this.INSTANCE == false) {
-            this.categories = new ArrayList<>();
-            System.out.println("Creating Category");
-        }
-        this.INSTANCE = true;
-    }
+    private Category() {}
 
     public Category(String url, String image, String name) {
         this.url = url;
         this.image = image;
         this.name = name;
+    }
+
+    public static Category getInstance() {
+        // Write code that allows us to create only one object
+        if (singleInstance == null) {
+            singleInstance = new Category();
+            categories = new ArrayList<>();
+            System.out.println("Creating Category");
+        }
+        return singleInstance;
     }
 
     public List<Category> GetListCategories(Document doc, HashMap<String, String> selector) {
@@ -66,7 +70,6 @@ public class Category {
         selector.put("image", AppConfig.CATEGORY_IMAGE_SELECTOR);
         selector.put("name", AppConfig.CATEGORY_NAME_SELECTOR);
         Document doc = JsoupConnect(url);
-        List<Category> res = this.GetListCategories(doc, selector);
-        return res;
+        return this.GetListCategories(doc, selector);
     }
 }

@@ -12,8 +12,9 @@ import java.nio.file.StandardCopyOption;
  */
 public class Image implements Runnable {
     private URI imageUrl;
-    private final Path destinationPath;
     private static final String FOLDER_PATH = "images";
+    private final Path destinationPath;
+    private static final String destinationFolderPath = String.join(AppConfig.FOLDER_DELIMITER, System.getProperty("user.dir"), FOLDER_PATH);
 
     Image(String imgUrl) {
         try {
@@ -21,7 +22,6 @@ public class Image implements Runnable {
         } catch (URISyntaxException e) {
             throw new IllegalArgumentException("Invalid URL: " + imageUrl, e);
         }
-        String destinationFolderPath = String.join("\\", System.getProperty("user.dir"), FOLDER_PATH);
         this.destinationPath = Path.of(destinationFolderPath, getFileNameFromUrl(imgUrl));
         try {
             Files.createDirectories(destinationPath.getParent());
@@ -35,9 +35,8 @@ public class Image implements Runnable {
         } catch (URISyntaxException e) {
             throw new IllegalArgumentException("Invalid URL: " + imageUrl, e);
         }
-        String subFolders = String.join("\\", folders);
-        String destinationFolderPath = String.join("\\", System.getProperty("user.dir"), FOLDER_PATH, subFolders);
-        this.destinationPath = Path.of(destinationFolderPath, getFileNameFromUrl(imgUrl));
+        String destinationFP = String.join(AppConfig.FOLDER_DELIMITER, destinationFolderPath, String.join(AppConfig.FOLDER_DELIMITER, folders));
+        this.destinationPath = Path.of(destinationFP, getFileNameFromUrl(imgUrl));
         try {
             Files.createDirectories(destinationPath.getParent());
         } catch (IOException e) {
@@ -46,10 +45,11 @@ public class Image implements Runnable {
     }
     public static String getFileNameFromUrl(String url) {
         String[] parts = url.split("/");
-        return parts[parts.length - 1];
+        return Parser.convertCyrillicToLatin(parts[parts.length - 1]).toLowerCase();
     }
     public void download(String[] folders) {
-        try (InputStream in = imageUrl.toURL().openStream()) {
+        try {
+            InputStream in = imageUrl.toURL().openStream();
             Files.copy(in, destinationPath, StandardCopyOption.REPLACE_EXISTING);
             System.out.println("Image downloaded successfully to: " + destinationPath);
         } catch (IOException e) {
@@ -57,7 +57,8 @@ public class Image implements Runnable {
         }
     }
     public void download() {
-        try (InputStream in = imageUrl.toURL().openStream()) {
+        try {
+            InputStream in = imageUrl.toURL().openStream();
             Files.copy(in, destinationPath, StandardCopyOption.REPLACE_EXISTING);
             System.out.println("Image downloaded successfully to: " + destinationPath);
         } catch (IOException e) {
@@ -66,7 +67,8 @@ public class Image implements Runnable {
     }
     @Override
     public void run() {
-        try (InputStream in = imageUrl.toURL().openStream()) {
+        try {
+            InputStream in = imageUrl.toURL().openStream();
             Files.copy(in, destinationPath, StandardCopyOption.REPLACE_EXISTING);
             System.out.println("Image downloaded successfully to: " + destinationPath);
         } catch (IOException e) {

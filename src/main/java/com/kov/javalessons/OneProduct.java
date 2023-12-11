@@ -1,6 +1,7 @@
 package com.kov.javalessons;
 
 import static com.kov.javalessons.Parser.JsoupConnect;
+
 import java.util.HashMap;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -10,26 +11,31 @@ public class OneProduct {
     private String image;
     private String name;
     private String description;
-    private static boolean INSTANCE = false;
-    
-    public OneProduct () {
-        if(INSTANCE == false){
-            System.out.println("Creating One Product");
-        }
-        INSTANCE = true;
-    }
+    private static OneProduct singleInstance;
+
+    private OneProduct() {}
+
     public OneProduct (String url, String image, String name, String description) {
         this.url = url;
         this.image = image;
         this.name = name;
         this.description = description;
     }
+
+    public static OneProduct getInstance() {
+        // Write code that allows us to create only one object
+        if (singleInstance == null) {
+            singleInstance = new OneProduct();
+            System.out.println("Creating One Product");
+        }
+        return singleInstance;
+    }
     
     public OneProduct GetProduct(Document doc, HashMap<String, String> selector){
         String sel = selector.get("main");
         Element item = doc.selectFirst(sel);
         OneProduct product = null;
-        if (item instanceof Element){
+        if (item != null){
             String prodURL = item.select(selector.get("url")).attr("content");
             String prodIMG = item.select(selector.get("image")).attr("src");
             String clearName = item.select(selector.get("name")).text(); 
@@ -68,7 +74,6 @@ public class OneProduct {
         selector.put("name", AppConfig.PRODUCT_NAME_SELECTOR);
         selector.put("description", AppConfig.PRODUCT_DESCRIPTION_SELECTOR);
         Document doc = JsoupConnect(url);
-        OneProduct res = this.GetProduct(doc,selector);
-        return res;
+        return this.GetProduct(doc,selector);
     }
 }

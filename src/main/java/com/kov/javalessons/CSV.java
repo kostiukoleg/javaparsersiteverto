@@ -4,6 +4,7 @@ import com.opencsv.CSVWriter;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvException;
 
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.FileReader;
 import java.io.IOException;
@@ -14,9 +15,9 @@ import java.util.List;
 public class CSV {
     
     private static String csvFilePath = "example.csv";
-    private static String charsetName = "windows-1251";
     private static char customDelimiter = ';';
-    
+    private static Charset encoding = Charset.forName("windows-1251");
+
     /**
     * Constructs a new CSV object.
     * This constructor initializes the CSV object with default values or performs any necessary setup.
@@ -36,7 +37,6 @@ public class CSV {
     * and custom delimiter.
     * 
     * @param argsCsvFilePath The file path to the CSV file.
-    * @param argsCharsetName The character set name for encoding and decoding CSV files.
     * @param argsCustomDelimiter The custom delimiter used in the CSV file.
     * 
     * Example usage:
@@ -48,58 +48,90 @@ public class CSV {
     */
     public CSV(String argsCsvFilePath, String argsCharsetName, char argsCustomDelimiter) {
         csvFilePath = argsCsvFilePath;
-        charsetName = argsCharsetName;
         customDelimiter = argsCustomDelimiter;
+        encoding = Charset.forName(argsCharsetName);
     }
     
     /**
      *
-     * @param data
-     * @throws java.io.IOException
-     * @throws com.opencsv.exceptions.CsvException
+     * @param data List of String Array to write in the CSV file
      * @author olegk
      */
-    public static void createCsvFile(List<String[]> data) throws IOException, CsvException {
-        Charset encoding = Charset.forName(charsetName);
-        try (CSVWriter writer = new CSVWriter(new FileWriter(csvFilePath, encoding), customDelimiter, 
-                                    CSVWriter.NO_QUOTE_CHARACTER,
-                                    CSVWriter.DEFAULT_ESCAPE_CHARACTER,
-                                    CSVWriter.DEFAULT_LINE_END)) {
+    public static void createCsvFile(List<String[]> data) {
+        CSVWriter writer = null;
+        try {
+            writer = new CSVWriter(new FileWriter(csvFilePath, encoding), customDelimiter,
+                                CSVWriter.NO_QUOTE_CHARACTER,
+                                CSVWriter.DEFAULT_ESCAPE_CHARACTER,
+                                CSVWriter.DEFAULT_LINE_END);
             writer.writeAll(data);
+        } catch (IOException e) {
+            System.out.println("File not found: " + e.getMessage());
+        } catch (NullPointerException e) {
+            System.out.println("Charset not found: " + e.getMessage());
+        } finally {
+            if (writer != null) {
+                try {
+                    writer.close();
+                } catch (IOException e) {
+                    System.out.println("Can't close Stream: " + e.getMessage());
+                }
+            }
         }
     }
     /**
      *
      * @return List<String[]> resultList
-     * @throws java.io.IOException
-     * @throws com.opencsv.exceptions.CsvException
      * @author olegk
      */
-    public static List<String[]> readCsvFile() throws IOException, CsvException {
+    public static List<String[]> readCsvFile() {
+
         List<String[]> resultList = new ArrayList<>();
         List<String[]> existingData;
-        Charset encoding = Charset.forName(charsetName);
-    
-        try (CSVReader reader = new CSVReader(new FileReader(csvFilePath, encoding))) {
+        CSVReader reader = null;
+
+        try {
+            reader = new CSVReader(new FileReader(csvFilePath, encoding));
             existingData = reader.readAll();
-        }
-        for (String[] item : existingData){
-            String joinedString = String.join(",", item);   
-            resultList.add(joinedString.split(";"));    
+            for (String[] item : existingData){
+                String joinedString = String.join(",", item);
+//                String newString = Parser.RegexReplaceAll(joinedString,"(?<!\\');", "");
+//                resultList.add(newString.split(";(?!')"));
+                resultList.add(joinedString.split(";"));
+            }
+        } catch (IOException e) {
+            System.out.println("File not found: " + e.getMessage());
+        } catch (NullPointerException e) {
+            System.out.println("Charset not found: " + e.getMessage());
+        } catch (CsvException e) {
+            throw new RuntimeException(e);
+        } finally {
+            if (reader != null) {
+                try {
+                    reader.close();
+                } catch (IOException e) {
+                    System.out.println("Can't close Stream: " + e.getMessage());
+                }
+            }
         }
         return resultList;
     }
+    public static String[] checkForSymbol(String[] data) {
+        String[] res = {};
+        for (String line : data) {
+          res = Parser.pushArray(res, Parser.RegexReplaceAll(line,"(?<!\\');", ""));
+        }
+        return res;
+    }
     /**
      *
-     * @param newData
-     * @throws java.io.IOException
-     * @throws com.opencsv.exceptions.CsvException
+     * @param newData Appending new data to the existing file
      * @author olegk
      */
-    public static void updateCsvFile(String[] newData) throws IOException, CsvException {
+    public static void updateCsvFile(String[] newData) {
         List<String[]> resultList;
         resultList = readCsvFile();       
-        resultList.add(newData);
+        resultList.add(checkForSymbol(newData));
         createCsvFile(resultList);
     }
     /**
@@ -108,15 +140,12 @@ public class CSV {
     *
     * @param args Command-line arguments provided to the program.
     * These can be used to pass inputs to the program from the command line.
-    * @throws java.io.IOException
-    * @throws com.opencsv.exceptions.CsvException
     * @author olegk
     */
-//    public static void main(String[] args) throws IOException, CsvException {
-//        List<String[]> resultList = new ArrayList<>();      
-//        resultList.add(Data.data1);
-//        resultList.add(Data.data2);
-//        createCsvFile(resultList);
-//        updateCsvFile(Data.newData);
-//    }
+    public static void main(String[] args) {
+        List<String[]> resultList = new ArrayList<>();
+        resultList.add(Data.productsData);
+        createCsvFile(resultList);
+        updateCsvFile(Data.productsData1);
+    }
 }

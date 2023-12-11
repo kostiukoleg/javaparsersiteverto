@@ -96,51 +96,74 @@ public class Parser {
         return res;
     }
 
-    public static void main(String[] args) throws IOException, CsvException {
-        Category c = new Category();
+    public static void main(String[] args) {
+        Image image;
+        Category c = Category.getInstance();
         List<Category> categories = c.index(AppConfig.CATEGORY_SITE_URL);
         String[] data_c_Array = new String[17];
         String[] data_p_Array = new String[25];
         int catIdNumber = Integer.parseInt(Data.categoryData1[14]);
         int prodIdNumber = Integer.parseInt(Data.productsData1[17]);
         List<Products> products;
-        Products ps = new Products();
-        OneProduct p = new OneProduct();
-        //Image image = new Image();
-//        String[] folders = {"category"};
-        String[] folders = {"products"};
+        Products ps = Products.getInstance();
+        OneProduct p = OneProduct.getInstance();
+
         for(Category item_c: categories){
-//           image.download(item.getImage(), folders);
-            data_c_Array[0] = item_c.getName();
-            data_c_Array[1] = convertCyrillicToLatin(item_c.getName()).toLowerCase();
-            data_c_Array[2] = Data.newCategoryData[2];
-            data_c_Array[3] = Data.newCategoryData[3];
-            data_c_Array[4] = Data.newCategoryData[4];
-            data_c_Array[5] =  "/uploads/"+Image.getFileNameFromUrl(item_c.getImage());
-            data_c_Array[6] = Data.newCategoryData[6];
-            data_c_Array[7] = Data.newCategoryData[7];
-            data_c_Array[8] = Data.newCategoryData[8];
-            data_c_Array[9] = Data.newCategoryData[9];
-            data_c_Array[10] = Data.newCategoryData[10];
-            data_c_Array[11] = Data.newCategoryData[11];
-            data_c_Array[12] = Data.newCategoryData[12];
-            data_c_Array[13] = Data.newCategoryData[13];
-            data_c_Array[14] = String.valueOf(++catIdNumber);
-            data_c_Array[15] = Data.newCategoryData[15];
-            data_c_Array[16] = data_c_Array[14];
-//           CSV.updateCsvFile(dataArray);
+//            image = new Image(item_c.getImage(), new String[]{"category"});
+            Thread thread = new Thread(new Image(item_c.getImage(), new String[]{"category"}));
+            thread.start();
+//            image.download();
+//            data_c_Array[0] = item_c.getName();
+//            data_c_Array[1] = convertCyrillicToLatin(item_c.getName()).toLowerCase();
+//            data_c_Array[2] = Data.newCategoryData[2];
+//            data_c_Array[3] = Data.newCategoryData[3];
+//            data_c_Array[4] = Data.newCategoryData[4];
+//            data_c_Array[5] =  "/uploads/"+Image.getFileNameFromUrl(item_c.getImage());
+//            data_c_Array[6] = Data.newCategoryData[6];
+//            data_c_Array[7] = Data.newCategoryData[7];
+//            data_c_Array[8] = Data.newCategoryData[8];
+//            data_c_Array[9] = Data.newCategoryData[9];
+//            data_c_Array[10] = Data.newCategoryData[10];
+//            data_c_Array[11] = Data.newCategoryData[11];
+//            data_c_Array[12] = Data.newCategoryData[12];
+//            data_c_Array[13] = Data.newCategoryData[13];
+//            data_c_Array[14] = String.valueOf(++catIdNumber);
+//            data_c_Array[15] = Data.newCategoryData[15];
+//            data_c_Array[16] = data_c_Array[14];
+//            CSV.updateCsvFile(data_c_Array);
+            System.out.println("Категорія "+item_c.getName());
             products = ps.index(item_c.getUrl());
+//            System.out.println(products.size());
             for(Products item_p: products){
                 OneProduct data_p = p.index(item_p.getUrl());
-                //image.download(data_p.getImage(), folders);
+                System.out.println("Товар "+data_p.getName());
+                //image.download(data_p.getImage(), new String[]{"products"});
                 data_p_Array[0] = "Межкомнатные двери/Verto/"+item_c.getName();
                 data_p_Array[1] = "mezhkomnatnye-dveri-vinnica/verto/"+convertCyrillicToLatin(item_c.getName()).toLowerCase();
                 data_p_Array[2] = "Дверне полотно "+data_p.getName();
                 data_p_Array[3] = Data.productsData1[3];
-                data_p_Array[4] = data_p.getDescription();
+                data_p_Array[4] = RegexReplaceAll(data_p.getDescription(),"[\\n\\t]", "");
                 data_p_Array[5] = Data.productsData1[5];
-                data_p_Array[6] = convertCyrillicToLatin(data_p_Array[2]).toLowerCase();
-                data_p_Array[7] = "1.0-2-306x350.jpg[:param:][alt=Дверне полотно 1.0][title=Дверне полотно 1.0]";
+                data_p_Array[6] = "mezhkomnatnye-dveri-vinnica-verto-"+convertCyrillicToLatin(data_p_Array[2]).toLowerCase();
+                data_p_Array[7] = Image.getFileNameFromUrl(data_p.getImage())+"[:param:][alt="+data_p_Array[2]+"][title="+data_p_Array[2]+"]";
+                data_p_Array[8] = Data.productsData1[8];
+                data_p_Array[9] = Data.productsData1[9];
+                data_p_Array[10] = Data.productsData1[10];
+                data_p_Array[11] = "Межкомнатные двери Verto "+item_c.getName()+" "+data_p_Array[2];
+                data_p_Array[12] = "Межкомнатные двери Verto "+item_c.getName()+" модель "+data_p.getName()+" купить, Межкомнатные, двери, Verto, "+item_c.getName()+", Купить в Виннице межкомнатные двери";
+                data_p_Array[13] = "Купить в Виннице межкомнатные двери изготовитель Verto колекция "+item_c.getName()+" модель "+data_p.getName();
+                data_p_Array[14] = Data.productsData1[14];
+                data_p_Array[15] = Data.productsData1[15];
+                data_p_Array[16] = Data.productsData1[16];
+                data_p_Array[17] = String.valueOf(++prodIdNumber);
+                data_p_Array[18] = Data.productsData1[18];
+                data_p_Array[19] = Data.productsData1[19];
+                data_p_Array[20] = Data.productsData1[20];
+                data_p_Array[21] = Data.productsData1[21];
+                data_p_Array[22] = Data.productsData1[22];
+                data_p_Array[23] = Data.productsData1[23];
+                data_p_Array[24] = Data.productsData1[17];
+//                CSV.updateCsvFile(data_p_Array);
             }
         }       
     }

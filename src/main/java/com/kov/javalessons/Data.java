@@ -85,49 +85,9 @@ public class Data {
         "mezhkomnatnye-dveri-vinnica/verto/klassik",
         "Дверне полотно 1.0",
         "",
-        "<div class=\"summary entry-summary\">\n" +
-                "\n" +
-                "\t\t<h1 itemprop=\"name\" class=\"product_title entry-title\">1.0</h1><div itemprop=\"offers\" itemscope=\"\" itemtype=\"http://schema.org/Offer\">\n" +
-                "\n" +
-                "\t<p class=\"price\"></p>\n" +
-                "\n" +
-                "\t<meta itemprop=\"price\" content=\"0\">\n" +
-                "\t<meta itemprop=\"priceCurrency\" content=\"UAH\">\n" +
-                "\t<link itemprop=\"availability\" href=\"http://schema.org/InStock\">\n" +
-                "\n" +
-                "</div>\n" +
-                "<div itemprop=\"description\">\n" +
-                "\t<p><strong><span style=\"vertical-align: inherit;\"><span style=\"vertical-align: inherit;\">КОНСТРУКЦИЯ ПОЛОТНА</span></span></strong></p>\n" +
-                "<ul>\n" +
-                "<li><span style=\"vertical-align: inherit;\"><span style=\"vertical-align: inherit;\">Каркас рамы полотна изготовлен из соснового бруса, срощенного по длине микрошипом.</span></span></li>\n" +
-                "<li><span style=\"vertical-align: inherit;\"><span style=\"vertical-align: inherit;\">Заполнение холста: стабилизирующий сотовый наполнитель или трубчатое ДСП заполнение.</span></span></li>\n" +
-                "<li><span style=\"vertical-align: inherit;\"><span style=\"vertical-align: inherit;\">Рама вместе с наполнителем оклеена с двух сторон плитами ХДФ.</span></span></li>\n" +
-                "<li><span style=\"vertical-align: inherit;\"><span style=\"vertical-align: inherit;\">Оба торца холста и верх оклеены кромочной лентой под цвет холста.</span></span></li>\n" +
-                "</ul>\n" +
-                "<p><strong><span style=\"vertical-align: inherit;\"><span style=\"vertical-align: inherit;\">ПОКРЫТИЕ</span></span></strong></p>\n" +
-                "<ul>\n" +
-                "<li><span style=\"vertical-align: inherit;\"><span style=\"vertical-align: inherit;\">Дверное полотно оклеено покрытием “SIMPLEX”, “Verto-CELL”, “UNI-MAT” или “RESIST”.</span></span></li>\n" +
-                "<li><span style=\"vertical-align: inherit;\"><span style=\"vertical-align: inherit;\">Рамка по периметру остекления (МДФ) оклеена под цвет холста.</span></span></li>\n" +
-                "</ul>\n" +
-                "<p><strong><span style=\"vertical-align: inherit;\"><span style=\"vertical-align: inherit;\">МОДЕЛЬ</span></span></strong></p>\n" +
-                "<ul>\n" +
-                "<li><span style=\"vertical-align: inherit;\"><span style=\"vertical-align: inherit;\">Одностворчатые и двустворчатые во всех моделях.</span></span></li>\n" +
-                "<li><span style=\"vertical-align: inherit;\"><span style=\"vertical-align: inherit;\">Все модели могут быть выполнены под раздвижную систему – без фурнитуры и четверти, нижний торец фрезирован под направляющий элемент, крепящийся к полу.</span></span></li>\n" +
-                "</ul>\n" +
-                "</div>\n" +
-                "<div class=\"product_meta\">\n" +
-                "\n" +
-                "\t\n" +
-                "\t\n" +
-                "\t<span class=\"posted_in\">Категории: <a href=\"https://verto-doors.com/ru/product-category/doors/%d0%ba%d0%bb%d0%b0%d1%81%d1%81%d0%b8%d0%ba/\" rel=\"tag\">Классик</a>, <a href=\"https://verto-doors.com/ru/product-category/doors/\" rel=\"tag\">Межкомнатные двери</a></span>\n" +
-                "\t\n" +
-                "\t\n" +
-                "</div>\n" +
-                "\n" +
-                "\n" +
-                "\t</div>",
+        "<div class='summary entry-summary'><h1 itemprop='name' class='product_title entry-title'>1.0</h1><div itemprop='offers' itemscope='' itemtype='http://schema.org/Offer'><p class='price'></p><meta itemprop='price' content='0'><meta itemprop='priceCurrency' content='UAH'><link itemprop='availability' href='http://schema.org/InStock'></div><div itemprop='description'><p><strong><span style='vertical-align: inherit;'><span style='vertical-align: inherit;'>КОНСТРУКЦИЯ ПОЛОТНА</span></span></strong></p><ul><li><span style='vertical-align: inherit;'><span style='vertical-align: inherit;'>Каркас рамы полотна изготовлен из соснового бруса, срощенного по длине микрошипом.</span></span></li><li><span style='vertical-align: inherit;'><span style='vertical-align: inherit;'>Заполнение холста: стабилизирующий сотовый наполнитель или трубчатое ДСП заполнение.</span></span></li><li><span style='vertical-align: inherit;'><span style='vertical-align: inherit;'>Рама вместе с наполнителем оклеена с двух сторон плитами ХДФ.</span></span></li><li><span style='vertical-align: inherit;'><span style='vertical-align: inherit;'>Оба торца холста и верх оклеены кромочной лентой под цвет холста.</span></span></li></ul><p><strong><span style='vertical-align: inherit;'><span style='vertical-align: inherit;'>ПОКРЫТИЕ</span></span></strong></p><ul><li><span style='vertical-align: inherit;'><span style='vertical-align: inherit;'>Дверное полотно оклеено покрытием “SIMPLEX”, “Verto-CELL”, “UNI-MAT” или “RESIST”.</span></span></li><li><span style='vertical-align: inherit;'><span style='vertical-align: inherit;'>Рамка по периметру остекления (МДФ) оклеена под цвет холста.</span></span></li></ul><p><strong><span style='vertical-align: inherit;'><span style='vertical-align: inherit;'>МОДЕЛЬ</span></span></strong></p><ul><li><span style='vertical-align: inherit;'><span style='vertical-align: inherit;'>Одностворчатые и двустворчатые во всех моделях.</span></span></li><li><span style='vertical-align: inherit;'><span style='vertical-align: inherit;'>Все модели могут быть выполнены под раздвижную систему – без фурнитуры и четверти, нижний торец фрезирован под направляющий элемент, крепящийся к полу.</span></span></li></ul></div><div class='product_meta'><span class='posted_in'>Категории: <a href='https://verto-doors.com/ru/product-category/doors/%d0%ba%d0%bb%d0%b0%d1%81%d1%81%d0%b8%d0%ba/' rel='tag'>Классик</a>, <a href='https://verto-doors.com/ru/product-category/doors/' rel='tag'>Межкомнатные двери</a></span></div></div>",
         "0",
-        "dverne-polotno-1-0",
+        "mezhkomnatnye-dveri-vinnica-verto-dverne-polotno-1-0",
         "1.0-2-306x350.jpg[:param:][alt=Дверне полотно 1.0][title=Дверне полотно 1.0]",
         "",
         "-1",

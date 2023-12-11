@@ -12,25 +12,28 @@ public class Products {
     private String url;
     private String image;
     private String name;
-    private boolean INSTANCE = false;
-    private List<Products> products;
-    
+    private static Products singleInstance;
+
+    private Products() {}
+
     public Products (String url, String image, String name) {
         this.url = url;
         this.image = image;
         this.name = name;
     }
-    public Products () {
-        if(this.INSTANCE == false){
-            this.products = new ArrayList<>();
+
+    public static Products getInstance() {
+        if (singleInstance == null) {
+            singleInstance = new Products();
             System.out.println("Creating Products");
         }
-        this.INSTANCE = true;
+        return singleInstance;
     }
     
     public List<Products> GetListProducts(Document doc, HashMap<String, String> selector){
         String sel = selector.get("url");
         Elements items = doc.select(sel);
+        List<Products> products = new ArrayList<>();
         for (Element item : items){
             String prodURL = item.attr("href");
             String prodIMG = item.select("img").attr("src");
@@ -45,9 +48,7 @@ public class Products {
         return url;
     }
     
-    public String getImage() {
-        return image;
-    }
+    public String getImage() { return image; }
     
     public String getName() {
         return name;
@@ -66,7 +67,6 @@ public class Products {
         selector.put("image", AppConfig.PRODUCTS_IMAGE_SELECTOR);
         selector.put("name", AppConfig.PRODUCTS_NAME_SELECTOR);
         Document doc = JsoupConnect(url);
-        List<Products> res = this.GetListProducts(doc,selector);
-        return res;
+        return this.GetListProducts(doc,selector);
     }
 }
